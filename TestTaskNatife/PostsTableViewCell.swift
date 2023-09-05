@@ -10,6 +10,8 @@ import UIKit
 class PostsTableViewCell: UITableViewCell {
     static let identifier = "PostsTableViewCell"
     
+    private var isExpanded = false
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -57,21 +59,53 @@ class PostsTableViewCell: UITableViewCell {
         contentView.addSubview(expandButton)
         
         applyConstraints()
+        
+        expandButton.addTarget(self, action: #selector(expandButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError()
     }
     
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
+    
+    private func updateDescriptionLabelConstraints() {
+        if isExpanded {
+            descriptionLabel.numberOfLines = 0
+        } else {
+            descriptionLabel.numberOfLines = 2
+        }
+    }
     
     public func configure(with model: Post) {
         titleLabel.text = model.title
         descriptionLabel.text = model.preview_text
         likesLabel.text = "❤️\(model.likes_count)"
         dateLabel.text = String(format: "%d days ago", Calendar.current.dateComponents([.day], from: model.timeshamp, to: Date()).day!)
+        
+        isExpanded = descriptionLabel.numberOfLines == 0
+        
+        updateDescriptionLabelConstraints()
+        
+    }
+    
+    @objc private func expandButtonTapped() {
+        isExpanded.toggle()
+        updateDescriptionLabelConstraints()
+        
+        if isExpanded {
+            expandButton.setTitle("Collapse", for: .normal)
+        } else {
+            expandButton.setTitle("Expand", for: .normal)
+        }
+        
+        // Пересчитываем высоту ячейки
+        if let tableView = superview as? UITableView {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
     }
     
     private func applyConstraints() {
@@ -88,7 +122,7 @@ class PostsTableViewCell: UITableViewCell {
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             descriptionLabel.widthAnchor.constraint(equalToConstant: contentView.frame.size.width),
-            descriptionLabel.bottomAnchor.constraint(equalTo: likesLabel.topAnchor, constant: -10),
+            descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: likesLabel.topAnchor, constant: -10),
             descriptionLabel.bottomAnchor.constraint(equalTo: dateLabel.topAnchor, constant: -10)
         ]
         
