@@ -68,9 +68,6 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: Post(postId: post.postId, timeshamp: post.timeshamp, title: post.title, preview_text: post.preview_text, likes_count: post.likes_count))
         return cell
     }
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 250
-//    }
+
 }
 

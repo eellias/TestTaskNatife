@@ -12,6 +12,8 @@ class PostsTableViewCell: UITableViewCell {
     
     private var isExpanded = false
     
+    private var isExpandable = false
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -85,9 +87,15 @@ class PostsTableViewCell: UITableViewCell {
         likesLabel.text = "❤️\(model.likes_count)"
         dateLabel.text = String(format: "%d days ago", Calendar.current.dateComponents([.day], from: model.timeshamp, to: Date()).day!)
         
-        isExpanded = descriptionLabel.numberOfLines == 0
+        descriptionLabel.layoutIfNeeded()
         
+        if descriptionLabel.countLines() <= 3 {
+            expandButton.isHidden = true
+        }
+        
+        isExpanded = descriptionLabel.numberOfLines == 0
         updateDescriptionLabelConstraints()
+        
         
     }
     
@@ -114,14 +122,12 @@ class PostsTableViewCell: UITableViewCell {
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             titleLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -10),
-            titleLabel.widthAnchor.constraint(equalToConstant: contentView.frame.size.width)
         ]
         
         let descriptionLabelConstraints = [
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            descriptionLabel.widthAnchor.constraint(equalToConstant: contentView.frame.size.width),
             descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: likesLabel.topAnchor, constant: -10),
             descriptionLabel.bottomAnchor.constraint(equalTo: dateLabel.topAnchor, constant: -10)
         ]
@@ -141,7 +147,6 @@ class PostsTableViewCell: UITableViewCell {
         let expandButtonConstraints = [
             expandButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             expandButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            expandButton.heightAnchor.constraint(equalToConstant: 50),
             expandButton.topAnchor.constraint(equalTo: likesLabel.bottomAnchor, constant: 10),
             expandButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             expandButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30)
@@ -153,4 +158,16 @@ class PostsTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(dateLabelConstraints)
         NSLayoutConstraint.activate(expandButtonConstraints)
     }
+}
+
+extension UILabel {
+  func countLines() -> Int {
+    guard let myText = self.text as NSString? else {
+      return 0
+    }
+    self.layoutIfNeeded()
+    let rect = CGSize(width: self.bounds.width, height: CGFloat.greatestFiniteMagnitude)
+    let labelSize = myText.boundingRect(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: self.font as Any], context: nil)
+    return Int(ceil(CGFloat(labelSize.height) / self.font.lineHeight))
+  }
 }
