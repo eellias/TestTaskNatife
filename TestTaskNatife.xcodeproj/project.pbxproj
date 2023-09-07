@@ -17,6 +17,7 @@
 		69ACE5DB2AA78FB60058FA79 /* CustomDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69ACE5DA2AA78FB60058FA79 /* CustomDateFormatter.swift */; };
 		69ACE5DE2AA78FE50058FA79 /* Posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69ACE5DD2AA78FE50058FA79 /* Posts.swift */; };
 		69ACE5E02AA790090058FA79 /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69ACE5DF2AA790090058FA79 /* PostsTableViewCell.swift */; };
+		69F0DC472AA9F553000D1B22 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F0DC462AA9F553000D1B22 /* DetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		69ACE5DA2AA78FB60058FA79 /* CustomDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDateFormatter.swift; sourceTree = "<group>"; };
 		69ACE5DD2AA78FE50058FA79 /* Posts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
 		69ACE5DF2AA790090058FA79 /* PostsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
+		69F0DC462AA9F553000D1B22 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				69ACE5CE2AA78F230058FA79 /* LaunchScreen.storyboard */,
 				69ACE5D12AA78F230058FA79 /* Info.plist */,
 				69ACE5DF2AA790090058FA79 /* PostsTableViewCell.swift */,
+				69F0DC462AA9F553000D1B22 /* DetailsViewController.swift */,
 			);
 			path = TestTaskNatife;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 			files = (
 				69ACE5DB2AA78FB60058FA79 /* CustomDateFormatter.swift in Sources */,
 				69ACE5DE2AA78FE50058FA79 /* Posts.swift in Sources */,
+				69F0DC472AA9F553000D1B22 /* DetailsViewController.swift in Sources */,
 				69ACE5C82AA78F210058FA79 /* PostsViewController.swift in Sources */,
 				69ACE5C42AA78F210058FA79 /* AppDelegate.swift in Sources */,
 				69ACE5C62AA78F210058FA79 /* SceneDelegate.swift in Sources */,

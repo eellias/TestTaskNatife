@@ -25,8 +25,11 @@ class APICaller {
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else { return }
             
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
+            
             do {
-                let results = try JSONDecoder().decode(PostsFeed.self, from: data)
+                let results = try decoder.decode(PostsFeed.self, from: data)
                 completion(.success(results.posts))
                 print(results)
             } catch {

@@ -22,7 +22,7 @@ class PostsTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let descriptionLabel: UILabel = {
+    public let descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 2
@@ -42,7 +42,7 @@ class PostsTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let expandButton: UIButton = {
+    public let expandButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .darkGray
