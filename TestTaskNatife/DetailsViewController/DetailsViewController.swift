@@ -10,6 +10,8 @@ import SDWebImage
 
 class DetailsViewController: UIViewController {
     
+    // MARK: - Views
+    
     private let contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -60,6 +62,8 @@ class DetailsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    // MARK: - Lyfecycle
 
 
     override func viewDidLoad() {
@@ -71,6 +75,8 @@ class DetailsViewController: UIViewController {
         
         applyConstraints()
     }
+    
+    // MARK: - Functions
     
     private func configureScrollView(){
         view.addSubview(scrollView)
@@ -139,7 +145,7 @@ class DetailsViewController: UIViewController {
         postTitleLabel.text = model.title
         postDescriptionLabel.text = model.text
         postLikesLabel.text = "❤️\(model.likes_count)"
-        postDateLabel.text = model.timeshamp.formatted(.dateTime.day().month(.wide).year(.defaultDigits))
+        postDateLabel.text = model.timeshamp.dateFormat
     }
 
 }

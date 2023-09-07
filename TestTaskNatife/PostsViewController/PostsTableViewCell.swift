@@ -14,6 +14,8 @@ class PostsTableViewCell: UITableViewCell {
     
     private var isExpandable = false
     
+    // MARK: - Views
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -52,6 +54,8 @@ class PostsTableViewCell: UITableViewCell {
         return button
     }()
     
+    // MARK: Initialisers
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -68,6 +72,8 @@ class PostsTableViewCell: UITableViewCell {
         super.layoutSubviews()
     }
     
+    // MARK: - Functions
+    
     private func updateDescriptionLabelConstraints() {
         if isExpanded {
             descriptionLabel.numberOfLines = 0
@@ -80,6 +86,8 @@ class PostsTableViewCell: UITableViewCell {
         titleLabel.text = model.title
         descriptionLabel.text = model.preview_text
         likesLabel.text = "❤️\(model.likes_count)"
+        
+        
         dateLabel.text = String(format: "%d days ago", Calendar.current.dateComponents([.day], from: model.timeshamp, to: Date()).day!)
         
         descriptionLabel.layoutIfNeeded()
@@ -157,16 +165,4 @@ class PostsTableViewCell: UITableViewCell {
             expandButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30)
         ])
     }
-}
-
-extension UILabel {
-  func countLines() -> Int {
-    guard let myText = self.text as NSString? else {
-      return 0
-    }
-    self.layoutIfNeeded()
-    let rect = CGSize(width: self.bounds.width, height: CGFloat.greatestFiniteMagnitude)
-    let labelSize = myText.boundingRect(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: self.font as Any], context: nil)
-    return Int(ceil(CGFloat(labelSize.height) / self.font.lineHeight))
-  }
 }

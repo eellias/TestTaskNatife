@@ -11,6 +11,8 @@ class PostsViewController: UIViewController {
     
     private var posts: [Post] = [Post]()
     
+    // MARK: - Views
+    
     private let tableView: UITableView = {
         let table = UITableView()
         table.register(PostsTableViewCell.self, forCellReuseIdentifier: PostsTableViewCell.identifier)
@@ -20,12 +22,15 @@ class PostsViewController: UIViewController {
     }()
     
     private let sortSegmentedControl: UISegmentedControl = {
+        
         let items = ["Feed", "By Date", "By Rating"]
         let control = UISegmentedControl(items: items)
         control.selectedSegmentIndex = 0
         
         return control
     }()
+    
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +55,8 @@ class PostsViewController: UIViewController {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
     }
+    
+    // MARK: - Functions
     
     private func fetchPosts() {
         APICaller.shared.getPostsFeed { [weak self] result in
