@@ -112,7 +112,6 @@ class PostsTableViewCell: UITableViewCell {
             expandButton.setTitle("Expand", for: .normal)
         }
         
-        // Пересчитываем высоту ячейки
         if let tableView = superview as? UITableView {
             tableView.beginUpdates()
             tableView.endUpdates()

@@ -35,8 +35,6 @@ class PostsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Posts"
-        
         view.backgroundColor = .systemBackground
         
         view.addSubview(tableView)
@@ -67,7 +65,9 @@ class PostsViewController: UIViewController {
                     self?.tableView.reloadData()
                 }
             case .failure(let error):
+                self?.showErrorAlert()
                 print(error.localizedDescription)
+                
             }
         }
     }
@@ -86,6 +86,23 @@ class PostsViewController: UIViewController {
         
         tableView.reloadData()
     }
+    
+    private func showErrorAlert() {
+        let alert = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
+        
+        let retryAction = UIAlertAction(title: "Try again", style: .default) { [weak self] (_) in
+            self?.fetchPosts()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(retryAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+        print("Error alert displayed")
+    }
+
 }
 
 extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -127,7 +144,9 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
                     self?.navigationController?.pushViewController(vc, animated: true)
                 }
             case .failure(let error):
+                self?.showErrorAlert()
                 print(error.localizedDescription)
+                
             }
         }
     }

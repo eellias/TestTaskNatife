@@ -31,7 +31,6 @@ class APICaller {
             do {
                 let results = try decoder.decode(PostsFeed.self, from: data)
                 completion(.success(results.posts))
-                print(results)
             } catch {
                 completion(.failure(APIError.failedToGetData))
                 print(error.localizedDescription)
@@ -44,8 +43,6 @@ class APICaller {
     func getPostById(with id: Int, completion: @escaping (Result<PostById, Error>) -> Void) {
         guard let url = URL(string: "\(Constants.postIdURL)\(id).json") else { return }
         
-        print(url)
-        
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else { return }
             
@@ -55,7 +52,6 @@ class APICaller {
             do {
                 let results = try decoder.decode(PostDetails.self, from: data)
                 completion(.success(results.post))
-                print(results)
             } catch {
                 completion(.failure(APIError.failedToGetData))
                 print(error.localizedDescription)
