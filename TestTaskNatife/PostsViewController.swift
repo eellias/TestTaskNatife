@@ -107,8 +107,21 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let vc = DetailsViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+        let post = posts[indexPath.row]
+        
+        let postId = post.postId
+        
+        APICaller.shared.getPostById(with: postId) { [weak self] result in
+            switch result {
+            case .success(let post):
+                DispatchQueue.main.async {
+                    let vc = DetailsViewController()
+                    vc.configure(with: PostById(postId: postId, timeshamp: post.timeshamp, title: post.title, text: post.text, postImage: post.postImage, likes_count: post.likes_count))
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
-
 }

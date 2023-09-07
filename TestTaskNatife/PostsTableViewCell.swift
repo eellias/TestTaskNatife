@@ -54,15 +54,10 @@ class PostsTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(descriptionLabel)
-        contentView.addSubview(likesLabel)
-        contentView.addSubview(dateLabel)
-        contentView.addSubview(expandButton)
+        
+        configureContentView()
         
         applyConstraints()
-        
-        expandButton.addTarget(self, action: #selector(expandButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -116,47 +111,51 @@ class PostsTableViewCell: UITableViewCell {
         }
     }
     
+    private func configureContentView() {
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(likesLabel)
+        contentView.addSubview(dateLabel)
+        contentView.addSubview(expandButton)
+        
+        expandButton.addTarget(self, action: #selector(expandButtonTapped), for: .touchUpInside)
+    }
+    
     private func applyConstraints() {
-        let titleLabelConstraints = [
+        NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
-            titleLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -10),
-        ]
+            titleLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -10)
+        ])
         
-        let descriptionLabelConstraints = [
+        NSLayoutConstraint.activate([
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: likesLabel.topAnchor, constant: -10),
             descriptionLabel.bottomAnchor.constraint(equalTo: dateLabel.topAnchor, constant: -10)
-        ]
+        ])
         
-        let likesLabelConstraints = [
+        NSLayoutConstraint.activate([
             likesLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 10),
             likesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             likesLabel.bottomAnchor.constraint(equalTo: expandButton.topAnchor, constant: -10)
-        ]
+        ])
         
-        let dateLabelConstraints = [
+        NSLayoutConstraint.activate([
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             dateLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 10),
             dateLabel.bottomAnchor.constraint(equalTo: expandButton.topAnchor, constant: -10)
-        ]
+        ])
         
-        let expandButtonConstraints = [
+        NSLayoutConstraint.activate([
             expandButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             expandButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             expandButton.topAnchor.constraint(equalTo: likesLabel.bottomAnchor, constant: 10),
             expandButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             expandButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30)
-        ]
-        
-        NSLayoutConstraint.activate(titleLabelConstraints)
-        NSLayoutConstraint.activate(descriptionLabelConstraints)
-        NSLayoutConstraint.activate(likesLabelConstraints)
-        NSLayoutConstraint.activate(dateLabelConstraints)
-        NSLayoutConstraint.activate(expandButtonConstraints)
+        ])
     }
 }
 
