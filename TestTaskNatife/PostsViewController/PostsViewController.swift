@@ -30,6 +30,13 @@ class PostsViewController: UIViewController {
         return control
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .gray
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -46,6 +53,8 @@ class PostsViewController: UIViewController {
         
         navigationItem.titleView = sortSegmentedControl
         
+        setupActivityIndicator()
+        
         fetchPosts()
     }
     
@@ -57,17 +66,20 @@ class PostsViewController: UIViewController {
     // MARK: - Functions
     
     private func fetchPosts() {
+        activityIndicator.startAnimating()
+        
         APICaller.shared.getPostsFeed { [weak self] result in
             switch result {
             case .success(let posts):
                 self?.posts = posts
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
+                    self?.activityIndicator.stopAnimating()
                 }
             case .failure(let error):
                 self?.showErrorAlert()
                 print(error.localizedDescription)
-                
+                self?.activityIndicator.stopAnimating()
             }
         }
     }
@@ -102,6 +114,13 @@ class PostsViewController: UIViewController {
         present(alert, animated: true, completion: nil)
         print("Error alert displayed")
     }
+    
+    private func setupActivityIndicator() {
+        view.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
 
 }
 
@@ -135,6 +154,8 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         
         let postId = post.postId
         
+        activityIndicator.startAnimating()
+        
         APICaller.shared.getPostById(with: postId) { [weak self] result in
             switch result {
             case .success(let post):
@@ -142,11 +163,12 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
                     let vc = DetailsViewController()
                     vc.configure(with: PostById(postId: postId, timeshamp: post.timeshamp, title: post.title, text: post.text, postImage: post.postImage, likes_count: post.likes_count))
                     self?.navigationController?.pushViewController(vc, animated: true)
+                    self?.activityIndicator.stopAnimating()
                 }
             case .failure(let error):
                 self?.showErrorAlert()
                 print(error.localizedDescription)
-                
+                self?.activityIndicator.stopAnimating()
             }
         }
     }

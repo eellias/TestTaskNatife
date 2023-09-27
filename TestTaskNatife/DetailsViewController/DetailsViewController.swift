@@ -63,6 +63,13 @@ class DetailsViewController: UIViewController {
         return label
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .gray
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     // MARK: - Lyfecycle
 
 
@@ -72,6 +79,8 @@ class DetailsViewController: UIViewController {
         title = "Post"
 
         view.backgroundColor = .systemBackground
+        
+        setupActivityIndicator()
         
         configureScrollView()
         
@@ -148,6 +157,13 @@ class DetailsViewController: UIViewController {
         postDescriptionLabel.text = model.text
         postLikesLabel.text = "❤️\(model.likes_count)"
         postDateLabel.text = model.timeshamp.dateFormat
+    }
+    
+    private func setupActivityIndicator() {
+        view.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
 
 }
