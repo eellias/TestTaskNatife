@@ -71,15 +71,16 @@ class PostsViewController: UIViewController {
         APICaller.shared.getPostsFeed { [weak self] result in
             switch result {
             case .success(let posts):
-                self?.posts = posts
                 DispatchQueue.main.async {
+                    self?.posts = posts
                     self?.tableView.reloadData()
                     self?.activityIndicator.stopAnimating()
                 }
             case .failure(let error):
-                self?.showErrorAlert()
-                print(error.localizedDescription)
-                self?.activityIndicator.stopAnimating()
+                DispatchQueue.main.async {
+                    self?.activityIndicator.stopAnimating()
+                    self?.showPostsErrorAlert()
+                }
             }
         }
     }
@@ -99,8 +100,8 @@ class PostsViewController: UIViewController {
         tableView.reloadData()
     }
     
-    private func showErrorAlert() {
-        let alert = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
+    private func showPostsErrorAlert() {
+        let alert = UIAlertController(title: "Loading error", message: "There was a problem loading the feed, please check your connection and try again.", preferredStyle: .alert)
         
         let retryAction = UIAlertAction(title: "Try again", style: .default) { [weak self] (_) in
             self?.fetchPosts()
@@ -112,7 +113,17 @@ class PostsViewController: UIViewController {
         alert.addAction(cancelAction)
         
         present(alert, animated: true, completion: nil)
-        print("Error alert displayed")
+    }
+    
+    private func showPostByIdErrorAlert() {
+        let alert = UIAlertController(title: "Loading error", message: "There was a problem loading the post, please check your connection and try again.", preferredStyle: .alert)
+        
+        
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     private func setupActivityIndicator() {
@@ -166,9 +177,10 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
                     self?.activityIndicator.stopAnimating()
                 }
             case .failure(let error):
-                self?.showErrorAlert()
-                print(error.localizedDescription)
-                self?.activityIndicator.stopAnimating()
+                DispatchQueue.main.async {
+                    self?.activityIndicator.stopAnimating()
+                    self?.showPostByIdErrorAlert()
+                }
             }
         }
     }

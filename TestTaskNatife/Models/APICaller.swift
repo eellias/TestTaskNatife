@@ -20,7 +20,10 @@ class APICaller {
     static let shared = APICaller()
     
     func getPostsFeed(completion: @escaping (Result<[Post], Error>) -> Void) {
-        guard let url = URL(string: Constants.postsFeedURL) else { return }
+        guard let url = URL(string: Constants.postsFeedURL) else {
+            completion(.failure(APIError.failedToGetData))
+            return
+        }
         
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else { return }
@@ -41,7 +44,10 @@ class APICaller {
     }
     
     func getPostById(with id: Int, completion: @escaping (Result<PostById, Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.postIdURL)\(id).json") else { return }
+        guard let url = URL(string: "\(Constants.postIdURL)\(id).json") else {
+            completion(.failure(APIError.failedToGetData))
+            return
+        }
         
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else { return }
